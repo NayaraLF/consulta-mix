@@ -370,9 +370,7 @@
 
         <footer>
             <p><strong>Como usar:</strong> Digite qualquer parte do que procura (marca, modelo, ano) para filtrar em tempo real.</p>
-            <p>💾 <strong>Se tiver erro de carregamento:</strong> Abra o terminal, navegue até esta pasta e execute:</p>
-            <p><code>python -m http.server 8000</code> e acesse <code>http://localhost:8000</code></p>
-            <p style="margin-top: 15px; color: #666;">Dados compilados de: Liderauto, Rayx e Permak</p>
+            <p style="margin-top: 15px; color: #b3d9d1;">Dados compilados de: Liderauto, Rayx e Permak</p>
         </footer>
     </div>
 
@@ -384,7 +382,7 @@
 
         async function loadData() {
             try {
-                const response = await fetch('../data/lampadas_data.json');
+                const response = await fetch('data/lampadas_data.json');
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
                 allData = await response.json();
@@ -396,13 +394,13 @@
                 document.getElementById('searchInput').addEventListener('input', renderResults);
                 document.getElementById('brandFilter').addEventListener('change', renderResults);
             } catch (error) {
+                const safeMessage = document.createElement('span');
+                safeMessage.textContent = error.message;
                 document.getElementById('resultsContainer').innerHTML = `
                     <div class="error-message">
                         <strong>⚠️ Erro ao carregar dados:</strong><br>
-                        ${error.message}<br><br>
-                        <strong>Solução:</strong> Certifique-se de que <code>lampadas_data.json</code> está na mesma pasta deste arquivo.
-                        Se ainda não tiver gerado os dados, execute:<br>
-                        <code>python scraping_lampadas.py</code>
+                        ${safeMessage.innerHTML}<br><br>
+                        <strong>Solução:</strong> Verifique se o arquivo <code>data/lampadas_data.json</code> existe no servidor.
                     </div>
                 `;
             }
